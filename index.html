@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<!-- ===== SEO / SHARING =================================================
+     og:image wants a full https:// URL once you have a domain, e.g.
+     https://haaland.studio/img/hero.jpg
+     ==================================================================== -->
+<title>Markus Haaland — Graphic Designer, Molde</title>
+<meta name="description" content="Markus Haaland, graphic designer in Molde, Norway. Brand identity, print and motion.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Markus Haaland">
+<meta property="og:description" content="Graphic design and motion out of Molde, Norway.">
+<meta property="og:image" content="img/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="screen" aria-hidden="true"></div>
+<div class="vig" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"><span></span></div>
+
+<!-- ===== HEADER ======================================================== -->
+<header class="hud hud-top">
+  <a class="mark" href="#top">MARKUS HAALAND<b>.</b></a>
+  <nav class="nav">
+    <a href="#work">Work</a>
+    <a href="#index">Index</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="cta">Contact</a>
+  </nav>
+</header>
+<div class="hud hud-bl"><span class="mono" id="clock">--:--:--</span></div>
+<div class="hud hud-br" id="dots" aria-hidden="true"></div>
+
+<main id="top">
+
+  <!-- ===== HERO ========================================================
+       SWAP THE IMAGE: put your file in img/ and change the src below.
+       16:9 works best. No filter is applied, what you export is what shows.
+       Want the wine duotone back? Change the div to:
+         <div class="hero-plate tinted">
+       =================================================================== -->
+  <section class="hero">
+    <div class="hero-plate">
+      <img src="img/hero.jpg" alt="Macro photograph of an eye, screened and tinted.">
+      <div class="dots"></div>
+    </div>
+    <div class="sweep" aria-hidden="true"></div>
+
+    <div class="hero-body">
+      <div class="hero-kick">
+        <span class="tag live">Open for freelance</span>
+        <span class="tag">Molde, Norway</span>
+      </div>
+      <h1 class="hero-name">Markus Haaland</h1>
+      <p class="hero-line">Graphic designer. Brand identity, print and motion.</p>
+      <div class="scrollcue" aria-hidden="true"><i></i><span class="micro">Scroll</span></div>
+    </div>
+
+    <!-- the tracked rail along the bottom of the hero -->
+    <div class="rail">
+      <div class="rail-words">
+        <span class="micro">Selected</span>
+        <span class="micro">Work</span>
+        <span class="micro">2020</span>
+        <span class="micro">—</span>
+        <span class="micro">2026</span>
+      </div>
+      <div class="bar">
+        <span class="micro">Reel</span>
+        <span class="pdot on"></span><span class="pdot on"></span><span class="pdot on"></span>
+        <span class="pdot"></span><span class="pdot"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TICKER ======================================================
+       Edit these words freely. They scroll faster as you scroll.
+       =================================================================== -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track" id="tick"
+         data-words="Brand identity / Posters / Editorial / Motion / LED / Art direction"></div>
+  </div>
+
+  <!-- ===== STATEMENT =================================================== -->
+  <section class="statement">
+    <span class="micro">01 — Position</span>
+    <h2 class="d">Most work gets looked at once. I design for the <mark>second look</mark>.</h2>
+    <p>Clean bones. Grainy skin.</p>
+  </section>
+
+  <!-- ===== THE WALL ====================================================
+       Projects come from js/content.js. Nothing to edit here.
+       =================================================================== -->
+  <section id="work">
+    <div class="head ruled">
+      <div><span class="micro">02 — Work</span><h2 class="d">The wall</h2></div>
+      <span class="mono" style="padding-bottom:4px"><span id="projCount">—</span> · drag to explore</span>
+    </div>
+    <div class="board" id="board" aria-hidden="true"><div class="board-wrap" id="wrap"></div></div>
+    <p class="vh">The wall is a decorative drag canvas. The same projects are listed as buttons below.</p>
+    <div class="board-foot">
+      <span class="hint"><i></i><span class="micro">Drag anywhere</span></span>
+      <span class="readout" id="readout">Focus: <b>—</b></span>
+    </div>
+  </section>
+
+  <!-- ===== INDEX ======================================================= -->
+  <section class="index" id="index">
+    <div class="head">
+      <div><span class="micro">03 — Index</span><h2 class="d">In order</h2></div>
+      <span class="mono" style="padding-bottom:4px">Select for detail</span>
+    </div>
+    <div class="idx" id="idx"></div>
+  </section>
+
+  <!-- ===== ABOUT ======================================================= -->
+  <section class="about" id="about">
+    <div>
+      <span class="micro">04 — About</span>
+      <h2 class="d">Twenty. Molde, Norway.</h2>
+      <p>Graphic designer at Tingh kommunikasjon, trained through a fagbrev in mediedesign. Identity, print and motion, from a 4&nbsp;cm label to a stadium LED wall.</p>
+    </div>
+    <div>
+      <span class="micro" style="display:block;margin-bottom:20px">Capabilities</span>
+      <div class="caps">
+        <div class="cap"><b>Brand identity</b><span>Marks · systems</span></div>
+        <div class="cap"><b>Print</b><span>Posters · editorial</span></div>
+        <div class="cap"><b>Motion</b><span>After Effects · LED</span></div>
+        <div class="cap"><b>Web</b><span>Webflow · hand-built</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===================================================== -->
+  <section class="contact" id="contact">
+    <span class="micro">05 — Contact</span>
+    <a class="mail" href="mailto:markushaaland1@gmail.com">markushaaland1@<br>gmail.com</a>
+    <div class="socials">
+      <a href="https://haaland.studio" target="_blank" rel="noopener">haaland.studio</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>
+    <span class="micro">© 2026 Markus Haaland</span>
+    <span class="mono">Optic v0.3</span>
+    <span class="mono">Molde · <span id="clock2">--:--</span></span>
+  </footer>
+</main>
+
+<div class="peek" id="peek" aria-hidden="true"><img alt=""></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <button class="sheet-close" id="sheetClose" type="button">Close ✕</button>
+  <div class="sheet-in" tabindex="-1">
+    <div class="sheet-art">
+      <button class="sheet-nav prev" id="sheetPrev" type="button" aria-label="Previous image">‹</button>
+      <img id="sheetImg" alt="">
+      <button class="sheet-nav next" id="sheetNext" type="button" aria-label="Next image">›</button>
+    </div>
+    <div class="sheet-bar">
+      <div class="sheet-meta">
+        <h3 id="sheetTitle">—</h3>
+        <p id="sheetNote">—</p>
+      </div>
+      <div class="sheet-side">
+        <span class="micro" id="sheetKind">—</span>
+        <span class="mono" id="sheetCount"></span>
+        <a class="sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener" hidden>View ↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/content.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>
