@@ -127,10 +127,9 @@ html.fx-no-cursor .cur{ display:none; }
 .hero-plate{ position:absolute; inset:0; overflow:hidden; background:var(--ink-2); }
 .hero-plate img{ width:100%; height:100%; object-fit:cover; object-position:50% 40%;
   display:block; transform:scale(1.03); transform-origin:50% 40%; }
-@media (max-aspect-ratio: 9/10){ .hero-plate img{ transform:scale(1.34); } }
+.hero-plate.tinted{ background:var(--wine); isolation:isolate; }
 
 /* optional duotone — off by default */
-.hero-plate.tinted{ background:var(--wine); isolation:isolate; }
 .hero-plate.tinted img{ mix-blend-mode:luminosity; filter:saturate(.2) contrast(1.2) brightness(.94); }
 
 /* legibility wash under the type — not a colour treatment */
@@ -298,16 +297,18 @@ footer{ border-top:1px solid var(--edge); padding:15px var(--gut);
 .sheet{ position:fixed; inset:0; z-index:130; display:grid; place-items:center;
   padding:calc(var(--safe-t) + 56px) clamp(16px,4vw,48px) calc(var(--safe-b) + 24px);
   background:rgba(5,5,6,.95); backdrop-filter:blur(16px); opacity:0; pointer-events:none;
-  transition:opacity .35s; }
+  transition:opacity .35s; overflow-y:auto;
+  align-items:safe center; justify-items:center;   /* never clip the top when it overflows */
+  -webkit-overflow-scrolling:touch; }
 .sheet.on{ opacity:1; pointer-events:auto; }
 
-.sheet-in{ width:min(1340px,100%); outline:none; max-height:100%; display:flex; flex-direction:column;
+.sheet-in{ width:min(1340px,100%); outline:none; display:flex; flex-direction:column;
   align-items:center; gap:clamp(14px,2.2vh,26px);
   transform:translate3d(0,14px,0) scale(.985); transition:transform .4s cubic-bezier(.16,1,.3,1); }
 .sheet.on .sheet-in{ transform:none; }
 
 .sheet-art{ position:relative; display:flex; align-items:center; justify-content:center;
-  min-height:0; width:100%; }
+  width:100%; flex:0 0 auto; }
 .sheet-art img{ display:block; width:auto; height:auto;
   max-width:100%; max-height:calc(100svh - 215px); object-fit:contain;
   border:1px solid var(--edge); background:var(--ink-3); cursor:zoom-in; }
@@ -321,7 +322,7 @@ footer{ border-top:1px solid var(--edge); padding:15px var(--gut);
 .sheet-nav.next{ right:clamp(-8px,-1vw,0px); }
 .sheet-nav[hidden]{ display:none; }
 
-.sheet-bar{ width:100%; display:flex; align-items:flex-start; justify-content:space-between;
+.sheet-bar{ width:100%; flex:0 0 auto; display:flex; align-items:flex-start; justify-content:space-between;
   gap:20px 32px; flex-wrap:wrap; border-top:1px solid var(--edge); padding-top:clamp(12px,1.8vh,20px); }
 .sheet-meta{ min-width:0; }
 .sheet-bar h3{ font-weight:800; text-transform:uppercase; letter-spacing:-.038em;
@@ -340,10 +341,15 @@ footer{ border-top:1px solid var(--edge); padding:15px var(--gut);
 .sheet-close:hover{ color:var(--wine); }
 
 @media (max-width: 680px){
-  .sheet{ padding-top:calc(var(--safe-t) + 48px); }
-  .sheet-art img{ max-height:calc(100svh - 300px); }
-  .sheet-nav{ width:38px; height:38px; font-size:21px; }
-  .sheet-side{ align-items:flex-start; flex-direction:row; align-items:center; gap:16px; }
+  .sheet{ padding:calc(var(--safe-t) + 52px) 16px calc(var(--safe-b) + 18px); }
+  .sheet-in{ gap:14px; }
+  .sheet-art img{ max-height:calc(100svh - 240px); }
+  .sheet-bar{ flex-direction:column; align-items:stretch; gap:12px; }
+  .sheet-bar h3{ font-size:clamp(20px,6.4vw,30px); margin-bottom:8px; }
+  .sheet-bar p{ font-size:13.5px; }
+  .sheet-side{ flex-direction:row; align-items:center; justify-content:space-between; gap:16px; }
+  .sheet-nav.prev{ left:4px; }
+  .sheet-nav.next{ right:4px; }
 }
 
 /* =========================================================================
@@ -351,14 +357,48 @@ footer{ border-top:1px solid var(--edge); padding:15px var(--gut);
    ========================================================================= */
 @media (max-width: 900px){
   .about{ grid-template-columns:1fr; }
-  .sheet-in{ grid-template-columns:1fr; }
-  .sheet-art{ min-height:180px; max-height:34svh; }
-  .sheet-txt{ border-left:0; border-top:1px solid var(--edge); }
 }
+/* ---- PHONES ------------------------------------------------------------
+   The hero stops being a full-bleed crop and becomes a band at its own
+   proportions, so the whole image is visible. --hero-ar is set by site.js
+   from the image you drop in, so this follows any file you swap.        */
 @media (max-width: 680px){
-  .nav a:not(.cta):not([href="#work"]){ display:none; }
-  .nav{ gap:16px; }
-  .board{ height:72svh; }
+  .nav a[href="#about"]{ display:none; }
+  .nav{ gap:15px; }
+
+  .hero{ min-height:0; }
+  .hero-plate{ position:relative; inset:auto; width:100%;
+    aspect-ratio:var(--hero-ar, 16 / 9); }
+  .hero-plate img{ transform:none; }
+  .hero-plate::after{ background:linear-gradient(to bottom,
+    rgba(10,10,11,.34) 0%, rgba(10,10,11,0) 38%, rgba(10,10,11,.8) 100%); }
+  .hero-body{ margin-top:0; padding-top:26px; }
+  .hero-name{ font-size:clamp(34px,9.4vw,52px); }
+  .sweep, .scrollcue{ display:none; }
+  .rail{ padding-bottom:54px; }
+
+  .head{ flex-direction:column; align-items:flex-start; gap:6px; }
+  .head .mono{ padding-bottom:0 !important; }
+  .board{ height:68svh; }
+
+  .about h2{ font-size:clamp(24px,7vw,34px); }
+  .statement h2{ font-size:clamp(26px,7.6vw,40px); }
+}
+
+/* ---- TOUCH -------------------------------------------------------------
+   No hover on a finger, so tile captions stay visible and every control
+   gets a real tap target.                                               */
+@media (pointer:coarse){
+  .hud-top{ padding-block:5px; }
+  .nav a{ padding:15px 3px; }
+  .mark{ padding:16px 0; }
+  .socials a{ padding:14px 0; }
+  .tile .tile-cap{ opacity:1; transform:none; }
+  .tile-cap{ background:linear-gradient(to top, rgba(10,10,11,.92), transparent); }
+  .idx-row{ padding-block:18px; }
+  .idx:hover .idx-row{ opacity:1; }
+  .sheet-nav{ width:54px; height:54px; font-size:27px; }
+  .sheet-close{ padding-block:calc(18px + var(--safe-t)) 18px; }
 }
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{ animation-duration:.001ms!important; animation-iteration-count:1!important;

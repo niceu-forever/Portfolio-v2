@@ -26,7 +26,17 @@ var root = document.documentElement;
 if(FX.grain === false)     root.classList.add('fx-no-grain');
 if(FX.scanlines === false) root.classList.add('fx-no-scanlines');
 if(FX.cursor === false)    root.classList.add('fx-no-cursor');
-var DRIFT = FX.drift !== false;
+var TOUCH = window.matchMedia('(pointer:coarse)').matches;
+/* drift is charming with a mouse and a battery drain on a phone */
+var DRIFT = FX.drift !== false && !TOUCH;
+
+/* the hero band on phones takes the image's own proportions */
+(function(){
+  var h=document.getElementById('heroImg');
+  if(!h) return;
+  function set(){ if(h.naturalWidth) root.style.setProperty('--hero-ar', h.naturalWidth+' / '+h.naturalHeight); }
+  if(h.complete) set(); else h.addEventListener('load', set);
+})();
 
 var INK='#0A0A0B', PAPER='#EDEBE7', WINE='#A8202F';
 
@@ -265,8 +275,9 @@ var S=.72, CW=CELL_W, CH=CELL_H, FOCUS_R=245;
 
 function buildWall(){
   var r=board.getBoundingClientRect(), vw=window.innerWidth;
-  /* keep the cell wider than the viewport so copies never sit side by side */
-  S = Math.min(1.05, Math.max(.42, (vw+200)/CELL_W));
+  /* the cell must stay wider than the viewport so copies never sit side by side */
+  var floor = (vw+200)/CELL_W;
+  S = vw < 700 ? Math.max(floor, .60) : Math.min(1.05, Math.max(.5, floor));
   CW=CELL_W*S; CH=CELL_H*S; FOCUS_R=340*S;
   var cols=Math.ceil(r.width/CW)+1, rows=Math.ceil(r.height/CH)+1;
   wrap.textContent=''; tiles=[];
@@ -330,10 +341,15 @@ function frame(){
   requestAnimationFrame(frame);
 }
 
+var downTile=null;
 board.addEventListener('pointerdown', function(e){
   dragging=true; moved=0; vx=vy=0; board.classList.add('dragging');
+  downTile = e.target && e.target.closest ? e.target.closest('.tile') : null;
   try{ board.setPointerCapture(e.pointerId); }catch(err){}
   lastX=e.clientX; lastY=e.clientY;
+  /* so a tap also lights the tile up, not just a hover */
+  var r=board.getBoundingClientRect();
+  ptrX=e.clientX-r.left; ptrY=e.clientY-r.top; ptrIn=true;
 });
 board.addEventListener('pointermove', function(e){
   var r=board.getBoundingClientRect();
@@ -344,10 +360,22 @@ board.addEventListener('pointermove', function(e){
   moved+=Math.abs(dx)+Math.abs(dy);
   lastX=e.clientX; lastY=e.clientY;
 });
-function endDrag(){ if(!dragging) return; dragging=false; board.classList.remove('dragging'); if(moved<7&&hot) openSheet(hot); }
+function tileProject(node){
+  for(var i=0;i<tiles.length;i++) if(tiles[i].e===node) return tiles[i].p;
+  return null;
+}
+function endDrag(){
+  if(!dragging) return;
+  dragging=false; board.classList.remove('dragging');
+  if(moved<9){
+    var p = (downTile && tileProject(downTile)) || hot;
+    if(p) openSheet(p);
+  }
+  downTile=null;
+}
 board.addEventListener('pointerup', endDrag);
 board.addEventListener('pointercancel', function(){ dragging=false; board.classList.remove('dragging'); });
-board.addEventListener('pointerleave', function(){ ptrIn=false; endDrag(); });
+board.addEventListener('pointerleave', function(){ if(!TOUCH) ptrIn=false; endDrag(); });
 
 if('IntersectionObserver' in window){
   new IntersectionObserver(function(en){ visible=en[0].isIntersecting; },{rootMargin:'120px'}).observe(board);
@@ -537,6 +565,11 @@ function clock(){
   }
 }
 clock(); setInterval(clock,1000);
+
+(function(){
+  var h=document.querySelector('.hint .micro');
+  if(h && TOUCH) h.textContent='Swipe to explore · tap to open';
+})();
 
 /* =========================================================================
    BOOT
